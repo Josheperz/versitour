@@ -1,0 +1,40 @@
+
+ <!DOCTYPE html>
+ <html lang="es">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Frases Inspiradoras</title>
+     <link rel="stylesheet" href="styles.css">
+ </head>
+ <body>
+     <div id="frase-container">
+         <p id="frase"></p>
+     </div>
+     <script>
+         document.addEventListener('DOMContentLoaded', () => {
+             let frases = JSON.parse(localStorage.getItem('frases')) || [];
+             if (frases.length === 0) {
+                 fetch('frases.json')
+                     .then(response => response.json())
+                     .then(data => {
+                         frases = data;
+                         mostrarFrase(frases);
+                     })
+                     .catch(error => console.error('Error al cargar las frases:', error));
+             } else {
+                 mostrarFrase(frases);
+             }
+         });
+ 
+         function mostrarFrase(frases) {
+             const fraseContainer = document.getElementById('frase');
+             let index = Math.floor(Math.random() * frases.length);
+             fraseContainer.textContent = frases[index].frase;
+             frases.splice(index, 1);
+             localStorage.setItem('frases', JSON.stringify(frases));
+         }
+     </script>
+ </body>
+ </html>
+ 
